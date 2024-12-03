@@ -30,12 +30,13 @@ def extract_named_entities(input_file, output_file):
     # Check if GPU is available
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-   
-    model = GLiNER.from_pretrained("urchade/gliner_medium-v2.1")
-     # Move the model to GPU if available
-    model.to(device)
+    # Check if multiple GPUs are available
+    if torch.cuda.device_count() > 1:
+        model = torch.nn.DataParallel(model)
 
-    
+    model = GLiNER.from_pretrained("urchade/gliner_medium-v2.1")
+    # Move the model to GPU if available
+    model.to(device)
     # Labels for entity prediction
     # Most GLiNER models should work best when entity types are in lower case or title case
     labels = ["Person", "Location", "Organization"]
