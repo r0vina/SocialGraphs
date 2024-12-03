@@ -1,3 +1,4 @@
 *.json filter=lfs diff=lfs merge=lfs -text
+*.ipynb filter=lfs diff=lfs merge=lfs -text
 JRE_Scrape.ipynb filter=lfs diff=lfs merge=lfs -text
 transcripts.json filter=lfs diff=lfs merge=lfs -text
