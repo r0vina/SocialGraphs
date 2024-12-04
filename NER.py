@@ -34,7 +34,7 @@ def extract_named_entities(input_file, output_file):
     if torch.cuda.device_count() > 1:
         model = torch.nn.DataParallel(model)
 
-    model = GLiNER.from_pretrained("urchade/gliner_medium-v2.1")
+    model = GLiNER.from_pretrained("numind/NuNerZero")
     # Move the model to GPU if available
     model.to(device)
     # Labels for entity prediction
