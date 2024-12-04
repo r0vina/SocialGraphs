@@ -13,6 +13,21 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 import nltk
 
+# load json data and convert to python dictionary
+with open('dictionary.json') as f:
+    data = json.load(f)
+
+#create new dictionary with only keys where value is not None
+def remove_empty_episodes(data):
+    new_dict = {}
+    for key in data:
+        if data[key] is not None:
+            new_dict[key] = data[key]
+    return new_dict
+
+cleaned_dict = remove_empty_episodes(data)
+
+
 # Download necessary NLTK resources if not already available
 try:
     stop_words = set(stopwords.words('english'))
@@ -68,7 +83,6 @@ tfidf = TfidfVectorizer(
 
 lemmatizer = WordNetLemmatizer()
 
-
 documents = list(cleaned_dict.values())  # Corpus: concatenated texts by IDs
 processed_docs = [preprocess(doc) for doc in documents]
 
@@ -89,37 +103,32 @@ dictionary = Dictionary(lemmatized_texts)
 corpus = [dictionary.doc2bow(doc) for doc in lemmatized_texts]  # Bag-of-words format
 
 # Train LDA
+# Number of topics is a hyperparameter, you can change it. ChatGPT said that 20 to 50 for large corpora is a good range.
+# Passes is also a hyperparameter, you can change it. It's the number of times the algorithm goes through the whole corpus. More passes, more accurate but also slower.
 lda_model = LdaModel(corpus, num_topics=20, id2word=dictionary, passes=10)
 
 # Display topics
 for idx, topic in lda_model.print_topics(-1):
     print(f"Topic {idx}: {topic}")
 
-# Classify each document into a topic
-document_topic_mapping = {}
-
-for i, bow in enumerate(corpus):
-    topic_distribution = lda_model[bow]  # Get the topic distribution for the document
-    most_probable_topic = max(topic_distribution, key=lambda x: x[1])[0]  # Find the topic with the highest probability
-    document_topic_mapping[list(cleaned_dict.keys())[i]] = most_probable_topic
-
-# Print document-topic mapping
-for episode_id, topic_id in document_topic_mapping.items():
-    print(f"Episode ID: {episode_id} => Assigned Topic: {topic_id}")
-
-# Optional: Save the document-topic mapping to a JSON file
-with open('document_topic_mapping.json', 'w') as f:
-    json.dump(document_topic_mapping, f, indent=4)
-
-# Generate wordclouds for each topic
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 
-# Create a folder to save wordclouds
+# Classify each document into a topic
+document_topic_mapping = {}
+for i, bow in enumerate(corpus):
+    topic_distribution = lda_model[bow]  # Get the topic distribution for the document
+    most_probable_topic = max(topic_distribution, key=lambda x: x[1])[0]  # Find the topic with the highest probability
+    document_topic_mapping[list(data.keys())[i]] = most_probable_topic
+
+# Save the document-topic mapping to a JSON file
+with open('document_topic_mapping.json', 'w') as f:
+    json.dump(document_topic_mapping, f, indent=4)
+
+# Visualization: Wordclouds for each topic
 import os
 os.makedirs("wordclouds", exist_ok=True)
 
-# Generate wordclouds for each topic
 for idx, topic in lda_model.show_topics(num_topics=20, formatted=False, num_words=50):
     topic_words = dict(topic)  # Convert word-probability pairs to dictionary
     
