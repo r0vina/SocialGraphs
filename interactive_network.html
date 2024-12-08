@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "FzAxtfdDHnY", "label": "FzAxtfdDHnY", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "NuQb11rSCXw", "label": "NuQb11rSCXw", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "_775vpoyMZs", "label": "_775vpoyMZs", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "H1Lg6MDaEjg", "label": "H1Lg6MDaEjg", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "t7CF9J90O5U", "label": "t7CF9J90O5U", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "tPWuR870Gug", "label": "tPWuR870Gug", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "D1XCWUm-GAI", "label": "D1XCWUm-GAI", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "OOSFef1lIAQ", "label": "OOSFef1lIAQ", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Fo_ymT8NJwY", "label": "Fo_ymT8NJwY", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "OYSk66YiFwQ", "label": "OYSk66YiFwQ", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "WAik24xe3HE", "label": "WAik24xe3HE", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "VUnRxNRsikk", "label": "VUnRxNRsikk", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "VoYLwjHSQAo", "label": "VoYLwjHSQAo", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "xNGjFN2ET0s", "label": "xNGjFN2ET0s", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "n4T-AJ1alag", "label": "n4T-AJ1alag", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "huYE-nW3JY8", "label": "huYE-nW3JY8", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "5-uDhcnL07A", "label": "5-uDhcnL07A", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "rgResrM_LoA", "label": "rgResrM_LoA", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "hHHgCVIrnyE", "label": "hHHgCVIrnyE", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "dpuLT-ldISs", "label": "dpuLT-ldISs", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "sgHt-fCEjm0", "label": "sgHt-fCEjm0", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "mdxN32QiaJU", "label": "mdxN32QiaJU", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "GgrspAOucvM", "label": "GgrspAOucvM", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "BoVXS7e0NRw", "label": "BoVXS7e0NRw", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "9aiJ1HaDsx0", "label": "9aiJ1HaDsx0", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "PzNPk8iksls", "label": "PzNPk8iksls", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "XF_lAWmSVoU", "label": "XF_lAWmSVoU", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "tlOyZSAZh2k", "label": "tlOyZSAZh2k", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "HpfYRH3X8ys", "label": "HpfYRH3X8ys", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "q1OgN79hdek", "label": "q1OgN79hdek", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "vIroVHH2IIA", "label": "vIroVHH2IIA", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "ogb-ix9uuHk", "label": "ogb-ix9uuHk", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "2Gc3ZftYmHg", "label": "2Gc3ZftYmHg", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "mjtdfoZCUv0", "label": "mjtdfoZCUv0", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "pQO9obvNhUo", "label": "pQO9obvNhUo", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "1YES-G0fATk", "label": "1YES-G0fATk", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "fq8Fs8AhdVM", "label": "fq8Fs8AhdVM", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "9yKO7EPTOoI", "label": "9yKO7EPTOoI", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "3Y85g9rpC8E", "label": "3Y85g9rpC8E", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "6UI7K-Mr8WI", "label": "6UI7K-Mr8WI", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "vZ_vLEUIF5U", "label": "vZ_vLEUIF5U", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "wGODg5ByuVo", "label": "wGODg5ByuVo", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "lA0EwdW7svg", "label": "lA0EwdW7svg", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "TXiG10Q00hE", "label": "TXiG10Q00hE", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "ru2vsy64Q6k", "label": "ru2vsy64Q6k", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "yZKhfZ25L4o", "label": "yZKhfZ25L4o", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "WE-lvHDQX8o", "label": "WE-lvHDQX8o", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Uy-kpbvv_-w", "label": "Uy-kpbvv_-w", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "nHrXYiM72Co", "label": "nHrXYiM72Co", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "ZyBsE7UyKkE", "label": "ZyBsE7UyKkE", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Ax9NbMpwl0s", "label": "Ax9NbMpwl0s", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "1fGR_d9DNpU", "label": "1fGR_d9DNpU", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "auslk18GgIE", "label": "auslk18GgIE", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Gdb4DFq_7x4", "label": "Gdb4DFq_7x4", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "ARAT9HQY6e4", "label": "ARAT9HQY6e4", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "6eF59X5auFo", "label": "6eF59X5auFo", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "FXjt1tB3UAE", "label": "FXjt1tB3UAE", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Frw-IBgu-Qw", "label": "Frw-IBgu-Qw", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "eSUbAroTW6s", "label": "eSUbAroTW6s", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "KkjxSKrcbOg", "label": "KkjxSKrcbOg", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Fy_OztGwivQ", "label": "Fy_OztGwivQ", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "ICrqTmO3Eo4", "label": "ICrqTmO3Eo4", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "15Ff4I6qsfU", "label": "15Ff4I6qsfU", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "lCR0Je9J4to", "label": "lCR0Je9J4to", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "deVoaRTfVqs", "label": "deVoaRTfVqs", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "CLgPhMUOmDw", "label": "CLgPhMUOmDw", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "HsD_J7S2cz4", "label": "HsD_J7S2cz4", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "dnpVNfHMlY4", "label": "dnpVNfHMlY4", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Z3M0Oy_HAfQ", "label": "Z3M0Oy_HAfQ", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "abT95p5iBkU", "label": "abT95p5iBkU", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "rwiGxmYJTEI", "label": "rwiGxmYJTEI", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "hWugDUjm2WU", "label": "hWugDUjm2WU", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "_yTxzwSW6pk", "label": "_yTxzwSW6pk", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "h4XkP10BQNo", "label": "h4XkP10BQNo", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "MkRuJVq-9C4", "label": "MkRuJVq-9C4", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "fQjBxSQNA9k", "label": "fQjBxSQNA9k", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "MD-DaEa0Tpg", "label": "MD-DaEa0Tpg", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Z-XkTegWKPE", "label": "Z-XkTegWKPE", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Yvi7y10yNyg", "label": "Yvi7y10yNyg", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Z4TKUEpbtJ8", "label": "Z4TKUEpbtJ8", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "FwlOPJzJGCg", "label": "FwlOPJzJGCg", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "e-8zbeH_kCg", "label": "e-8zbeH_kCg", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "v1xePSUC3I4", "label": "v1xePSUC3I4", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "bepFvVY9MuM", "label": "bepFvVY9MuM", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "q5_9sLvLsEM", "label": "q5_9sLvLsEM", "shape": "dot", "size": 10}]);
+                  edges = new vis.DataSet([{"from": "FzAxtfdDHnY", "to": "NuQb11rSCXw", "width": 0.9009027481079102}, {"from": "FzAxtfdDHnY", "to": "_775vpoyMZs", "width": 0.9016298055648804}, {"from": "FzAxtfdDHnY", "to": "H1Lg6MDaEjg", "width": 0.9219660758972168}, {"from": "FzAxtfdDHnY", "to": "t7CF9J90O5U", "width": 0.9019117951393127}, {"from": "FzAxtfdDHnY", "to": "tPWuR870Gug", "width": 0.9242068529129028}, {"from": "FzAxtfdDHnY", "to": "D1XCWUm-GAI", "width": 0.9019372463226318}, {"from": "FzAxtfdDHnY", "to": "OOSFef1lIAQ", "width": 0.9031850695610046}, {"from": "FzAxtfdDHnY", "to": "Fo_ymT8NJwY", "width": 0.9274152517318726}, {"from": "FzAxtfdDHnY", "to": "OYSk66YiFwQ", "width": 0.9008215665817261}, {"from": "FzAxtfdDHnY", "to": "WAik24xe3HE", "width": 0.9051738977432251}, {"from": "FzAxtfdDHnY", "to": "VUnRxNRsikk", "width": 0.9090855121612549}, {"from": "FzAxtfdDHnY", "to": "VoYLwjHSQAo", "width": 0.9096212387084961}, {"from": "FzAxtfdDHnY", "to": "xNGjFN2ET0s", "width": 0.9102119207382202}, {"from": "n4T-AJ1alag", "to": "huYE-nW3JY8", "width": 0.9006717801094055}, {"from": "n4T-AJ1alag", "to": "5-uDhcnL07A", "width": 0.905364990234375}, {"from": "n4T-AJ1alag", "to": "rgResrM_LoA", "width": 0.9020811319351196}, {"from": "NuQb11rSCXw", "to": "H1Lg6MDaEjg", "width": 0.9103626012802124}, {"from": "hHHgCVIrnyE", "to": "D1XCWUm-GAI", "width": 0.9018058776855469}, {"from": "hHHgCVIrnyE", "to": "VoYLwjHSQAo", "width": 0.9035354852676392}, {"from": "hHHgCVIrnyE", "to": "dpuLT-ldISs", "width": 0.9123845100402832}, {"from": "sgHt-fCEjm0", "to": "mdxN32QiaJU", "width": 0.9100929498672485}, {"from": "sgHt-fCEjm0", "to": "GgrspAOucvM", "width": 0.9065982103347778}, {"from": "sgHt-fCEjm0", "to": "BoVXS7e0NRw", "width": 0.9030689001083374}, {"from": "mdxN32QiaJU", "to": "_775vpoyMZs", "width": 0.9105551242828369}, {"from": "mdxN32QiaJU", "to": "tPWuR870Gug", "width": 0.9201850891113281}, {"from": "mdxN32QiaJU", "to": "9aiJ1HaDsx0", "width": 0.9146438837051392}, {"from": "mdxN32QiaJU", "to": "Fo_ymT8NJwY", "width": 0.9025753736495972}, {"from": "mdxN32QiaJU", "to": "VUnRxNRsikk", "width": 0.9032835960388184}, {"from": "mdxN32QiaJU", "to": "VoYLwjHSQAo", "width": 0.908147931098938}, {"from": "mdxN32QiaJU", "to": "xNGjFN2ET0s", "width": 0.9067787528038025}, {"from": "mdxN32QiaJU", "to": "PzNPk8iksls", "width": 0.901871919631958}, {"from": "XF_lAWmSVoU", "to": "tlOyZSAZh2k", "width": 0.9015339612960815}, {"from": "_775vpoyMZs", "to": "HpfYRH3X8ys", "width": 0.9160987138748169}, {"from": "_775vpoyMZs", "to": "H1Lg6MDaEjg", "width": 0.9048311114311218}, {"from": "_775vpoyMZs", "to": "t7CF9J90O5U", "width": 0.9064188003540039}, {"from": "_775vpoyMZs", "to": "q1OgN79hdek", "width": 0.9006541967391968}, {"from": "_775vpoyMZs", "to": "GgrspAOucvM", "width": 0.9005652666091919}, {"from": "_775vpoyMZs", "to": "D1XCWUm-GAI", "width": 0.9054372906684875}, {"from": "_775vpoyMZs", "to": "vIroVHH2IIA", "width": 0.9039642214775085}, {"from": "_775vpoyMZs", "to": "Fo_ymT8NJwY", "width": 0.9034028053283691}, {"from": "_775vpoyMZs", "to": "OYSk66YiFwQ", "width": 0.9091699719429016}, {"from": "_775vpoyMZs", "to": "BoVXS7e0NRw", "width": 0.9004830718040466}, {"from": "_775vpoyMZs", "to": "VUnRxNRsikk", "width": 0.9027608036994934}, {"from": "_775vpoyMZs", "to": "VoYLwjHSQAo", "width": 0.9124606847763062}, {"from": "_775vpoyMZs", "to": "ogb-ix9uuHk", "width": 0.9113747477531433}, {"from": "_775vpoyMZs", "to": "2Gc3ZftYmHg", "width": 0.90090012550354}, {"from": "mjtdfoZCUv0", "to": "t7CF9J90O5U", "width": 0.9024209380149841}, {"from": "pQO9obvNhUo", "to": "tPWuR870Gug", "width": 0.9010626077651978}, {"from": "pQO9obvNhUo", "to": "Fo_ymT8NJwY", "width": 0.9209597706794739}, {"from": "pQO9obvNhUo", "to": "xNGjFN2ET0s", "width": 0.9077115654945374}, {"from": "1YES-G0fATk", "to": "fq8Fs8AhdVM", "width": 0.9036890268325806}, {"from": "9yKO7EPTOoI", "to": "H1Lg6MDaEjg", "width": 0.9031941294670105}, {"from": "9yKO7EPTOoI", "to": "Fo_ymT8NJwY", "width": 0.9062662720680237}, {"from": "9yKO7EPTOoI", "to": "3Y85g9rpC8E", "width": 0.9044094085693359}, {"from": "6UI7K-Mr8WI", "to": "rgResrM_LoA", "width": 0.9089705944061279}, {"from": "vZ_vLEUIF5U", "to": "OOSFef1lIAQ", "width": 0.9042396545410156}, {"from": "vZ_vLEUIF5U", "to": "wGODg5ByuVo", "width": 0.9006599187850952}, {"from": "HpfYRH3X8ys", "to": "Fo_ymT8NJwY", "width": 0.900120735168457}, {"from": "HpfYRH3X8ys", "to": "ogb-ix9uuHk", "width": 0.9015389680862427}, {"from": "lA0EwdW7svg", "to": "OOSFef1lIAQ", "width": 0.9009899497032166}, {"from": "lA0EwdW7svg", "to": "TXiG10Q00hE", "width": 0.9012376070022583}, {"from": "ru2vsy64Q6k", "to": "yZKhfZ25L4o", "width": 0.9009271264076233}, {"from": "ru2vsy64Q6k", "to": "vIroVHH2IIA", "width": 0.9142158031463623}, {"from": "ru2vsy64Q6k", "to": "VoYLwjHSQAo", "width": 0.909229576587677}, {"from": "ru2vsy64Q6k", "to": "WE-lvHDQX8o", "width": 0.9146740436553955}, {"from": "Uy-kpbvv_-w", "to": "nHrXYiM72Co", "width": 0.9001702070236206}, {"from": "H1Lg6MDaEjg", "to": "Fo_ymT8NJwY", "width": 0.9111498594284058}, {"from": "H1Lg6MDaEjg", "to": "VoYLwjHSQAo", "width": 0.9200283288955688}, {"from": "H1Lg6MDaEjg", "to": "ZyBsE7UyKkE", "width": 0.9013677835464478}, {"from": "H1Lg6MDaEjg", "to": "2Gc3ZftYmHg", "width": 0.920101523399353}, {"from": "Ax9NbMpwl0s", "to": "9aiJ1HaDsx0", "width": 0.9032308459281921}, {"from": "t7CF9J90O5U", "to": "tPWuR870Gug", "width": 0.9030792117118835}, {"from": "t7CF9J90O5U", "to": "Fo_ymT8NJwY", "width": 0.9001682996749878}, {"from": "t7CF9J90O5U", "to": "OYSk66YiFwQ", "width": 0.9021101593971252}, {"from": "t7CF9J90O5U", "to": "fq8Fs8AhdVM", "width": 0.9110047817230225}, {"from": "t7CF9J90O5U", "to": "xNGjFN2ET0s", "width": 0.9179875254631042}, {"from": "t7CF9J90O5U", "to": "ZyBsE7UyKkE", "width": 0.9072739481925964}, {"from": "1fGR_d9DNpU", "to": "nHrXYiM72Co", "width": 0.9028849601745605}, {"from": "tPWuR870Gug", "to": "auslk18GgIE", "width": 0.9018641710281372}, {"from": "tPWuR870Gug", "to": "OOSFef1lIAQ", "width": 0.9053194522857666}, {"from": "tPWuR870Gug", "to": "Fo_ymT8NJwY", "width": 0.920073390007019}, {"from": "tPWuR870Gug", "to": "Gdb4DFq_7x4", "width": 0.9056152105331421}, {"from": "tPWuR870Gug", "to": "ARAT9HQY6e4", "width": 0.9042679071426392}, {"from": "tPWuR870Gug", "to": "OYSk66YiFwQ", "width": 0.908300518989563}, {"from": "tPWuR870Gug", "to": "WAik24xe3HE", "width": 0.9230117201805115}, {"from": "tPWuR870Gug", "to": "VoYLwjHSQAo", "width": 0.9095052480697632}, {"from": "tPWuR870Gug", "to": "6eF59X5auFo", "width": 0.9059391021728516}, {"from": "tPWuR870Gug", "to": "fq8Fs8AhdVM", "width": 0.9058990478515625}, {"from": "tPWuR870Gug", "to": "rgResrM_LoA", "width": 0.9187848567962646}, {"from": "tPWuR870Gug", "to": "xNGjFN2ET0s", "width": 0.9175937175750732}, {"from": "FXjt1tB3UAE", "to": "Frw-IBgu-Qw", "width": 0.9029421210289001}, {"from": "FXjt1tB3UAE", "to": "dpuLT-ldISs", "width": 0.9069414734840393}, {"from": "q1OgN79hdek", "to": "eSUbAroTW6s", "width": 0.9022040367126465}, {"from": "KkjxSKrcbOg", "to": "Fy_OztGwivQ", "width": 0.9406105279922485}, {"from": "ICrqTmO3Eo4", "to": "OYSk66YiFwQ", "width": 0.9008287787437439}, {"from": "15Ff4I6qsfU", "to": "lCR0Je9J4to", "width": 0.9096546173095703}, {"from": "15Ff4I6qsfU", "to": "deVoaRTfVqs", "width": 0.9087907075881958}, {"from": "15Ff4I6qsfU", "to": "WE-lvHDQX8o", "width": 0.9030523300170898}, {"from": "Frw-IBgu-Qw", "to": "D1XCWUm-GAI", "width": 0.9045863747596741}, {"from": "Frw-IBgu-Qw", "to": "CLgPhMUOmDw", "width": 0.9174506664276123}, {"from": "Frw-IBgu-Qw", "to": "TXiG10Q00hE", "width": 0.909713864326477}, {"from": "Frw-IBgu-Qw", "to": "WE-lvHDQX8o", "width": 0.9094835519790649}, {"from": "GgrspAOucvM", "to": "yZKhfZ25L4o", "width": 0.9157372117042542}, {"from": "GgrspAOucvM", "to": "9aiJ1HaDsx0", "width": 0.9083489179611206}, {"from": "GgrspAOucvM", "to": "VUnRxNRsikk", "width": 0.904658317565918}, {"from": "D1XCWUm-GAI", "to": "ARAT9HQY6e4", "width": 0.9029396772384644}, {"from": "D1XCWUm-GAI", "to": "VUnRxNRsikk", "width": 0.914355993270874}, {"from": "D1XCWUm-GAI", "to": "VoYLwjHSQAo", "width": 0.9049289226531982}, {"from": "D1XCWUm-GAI", "to": "WE-lvHDQX8o", "width": 0.9103825092315674}, {"from": "vIroVHH2IIA", "to": "Fo_ymT8NJwY", "width": 0.9196360111236572}, {"from": "vIroVHH2IIA", "to": "OYSk66YiFwQ", "width": 0.9174483418464661}, {"from": "vIroVHH2IIA", "to": "BoVXS7e0NRw", "width": 0.9085935950279236}, {"from": "vIroVHH2IIA", "to": "VoYLwjHSQAo", "width": 0.9058887958526611}, {"from": "HsD_J7S2cz4", "to": "dnpVNfHMlY4", "width": 0.9017630219459534}, {"from": "Z3M0Oy_HAfQ", "to": "abT95p5iBkU", "width": 0.9139173030853271}, {"from": "9aiJ1HaDsx0", "to": "rwiGxmYJTEI", "width": 0.9021424651145935}, {"from": "OOSFef1lIAQ", "to": "wGODg5ByuVo", "width": 0.9032605886459351}, {"from": "Fo_ymT8NJwY", "to": "OYSk66YiFwQ", "width": 0.920001208782196}, {"from": "Fo_ymT8NJwY", "to": "BoVXS7e0NRw", "width": 0.9067587852478027}, {"from": "Fo_ymT8NJwY", "to": "VUnRxNRsikk", "width": 0.9177663326263428}, {"from": "Fo_ymT8NJwY", "to": "VoYLwjHSQAo", "width": 0.9403551816940308}, {"from": "Fo_ymT8NJwY", "to": "fq8Fs8AhdVM", "width": 0.9039902687072754}, {"from": "Fo_ymT8NJwY", "to": "xNGjFN2ET0s", "width": 0.9338932037353516}, {"from": "Fo_ymT8NJwY", "to": "3Y85g9rpC8E", "width": 0.9027365446090698}, {"from": "Fo_ymT8NJwY", "to": "dpuLT-ldISs", "width": 0.9170198440551758}, {"from": "Gdb4DFq_7x4", "to": "WAik24xe3HE", "width": 0.9070666432380676}, {"from": "Gdb4DFq_7x4", "to": "fq8Fs8AhdVM", "width": 0.9033454656600952}, {"from": "Gdb4DFq_7x4", "to": "2Gc3ZftYmHg", "width": 0.9138370156288147}, {"from": "hWugDUjm2WU", "to": "5-uDhcnL07A", "width": 0.9167683124542236}, {"from": "hWugDUjm2WU", "to": "_yTxzwSW6pk", "width": 0.9165087938308716}, {"from": "hWugDUjm2WU", "to": "abT95p5iBkU", "width": 0.9020498394966125}, {"from": "hWugDUjm2WU", "to": "h4XkP10BQNo", "width": 0.9013859033584595}, {"from": "hWugDUjm2WU", "to": "MkRuJVq-9C4", "width": 0.9051302075386047}, {"from": "hWugDUjm2WU", "to": "eSUbAroTW6s", "width": 0.9134034514427185}, {"from": "5-uDhcnL07A", "to": "rgResrM_LoA", "width": 0.9147878885269165}, {"from": "5-uDhcnL07A", "to": "fQjBxSQNA9k", "width": 0.9124090075492859}, {"from": "5-uDhcnL07A", "to": "eSUbAroTW6s", "width": 0.9392284154891968}, {"from": "MD-DaEa0Tpg", "to": "_yTxzwSW6pk", "width": 0.9030667543411255}, {"from": "MD-DaEa0Tpg", "to": "abT95p5iBkU", "width": 0.9025535583496094}, {"from": "MD-DaEa0Tpg", "to": "rgResrM_LoA", "width": 0.9273883104324341}, {"from": "MD-DaEa0Tpg", "to": "WE-lvHDQX8o", "width": 0.9026882648468018}, {"from": "MD-DaEa0Tpg", "to": "fQjBxSQNA9k", "width": 0.9074578285217285}, {"from": "MD-DaEa0Tpg", "to": "eSUbAroTW6s", "width": 0.9045441150665283}, {"from": "ARAT9HQY6e4", "to": "WAik24xe3HE", "width": 0.9134430885314941}, {"from": "ARAT9HQY6e4", "to": "2Gc3ZftYmHg", "width": 0.9206674098968506}, {"from": "OYSk66YiFwQ", "to": "BoVXS7e0NRw", "width": 0.9715123176574707}, {"from": "OYSk66YiFwQ", "to": "VoYLwjHSQAo", "width": 0.9300905466079712}, {"from": "OYSk66YiFwQ", "to": "dpuLT-ldISs", "width": 0.903287410736084}, {"from": "BoVXS7e0NRw", "to": "Z-XkTegWKPE", "width": 0.9049793481826782}, {"from": "BoVXS7e0NRw", "to": "VoYLwjHSQAo", "width": 0.9175306558609009}, {"from": "Yvi7y10yNyg", "to": "Z4TKUEpbtJ8", "width": 0.9532270431518555}, {"from": "WAik24xe3HE", "to": "fq8Fs8AhdVM", "width": 0.9001065492630005}, {"from": "WAik24xe3HE", "to": "2Gc3ZftYmHg", "width": 0.9139862656593323}, {"from": "FwlOPJzJGCg", "to": "VoYLwjHSQAo", "width": 0.9064178466796875}, {"from": "VUnRxNRsikk", "to": "VoYLwjHSQAo", "width": 0.9112100601196289}, {"from": "VUnRxNRsikk", "to": "WE-lvHDQX8o", "width": 0.9026938676834106}, {"from": "VUnRxNRsikk", "to": "3Y85g9rpC8E", "width": 0.9132595062255859}, {"from": "_yTxzwSW6pk", "to": "abT95p5iBkU", "width": 0.9074364900588989}, {"from": "lCR0Je9J4to", "to": "WE-lvHDQX8o", "width": 0.9036644697189331}, {"from": "abT95p5iBkU", "to": "6eF59X5auFo", "width": 0.9091915488243103}, {"from": "abT95p5iBkU", "to": "rgResrM_LoA", "width": 0.9058825969696045}, {"from": "abT95p5iBkU", "to": "WE-lvHDQX8o", "width": 0.9180073738098145}, {"from": "VoYLwjHSQAo", "to": "TXiG10Q00hE", "width": 0.9027573466300964}, {"from": "VoYLwjHSQAo", "to": "WE-lvHDQX8o", "width": 0.9184566736221313}, {"from": "VoYLwjHSQAo", "to": "xNGjFN2ET0s", "width": 0.9058181047439575}, {"from": "VoYLwjHSQAo", "to": "ZyBsE7UyKkE", "width": 0.9081677198410034}, {"from": "VoYLwjHSQAo", "to": "dpuLT-ldISs", "width": 0.9171709418296814}, {"from": "6eF59X5auFo", "to": "h4XkP10BQNo", "width": 0.9168562889099121}, {"from": "6eF59X5auFo", "to": "rgResrM_LoA", "width": 0.9056733846664429}, {"from": "6eF59X5auFo", "to": "WE-lvHDQX8o", "width": 0.9215295314788818}, {"from": "h4XkP10BQNo", "to": "WE-lvHDQX8o", "width": 0.9043123722076416}, {"from": "h4XkP10BQNo", "to": "e-8zbeH_kCg", "width": 0.9027957916259766}, {"from": "h4XkP10BQNo", "to": "MkRuJVq-9C4", "width": 0.9139071106910706}, {"from": "h4XkP10BQNo", "to": "eSUbAroTW6s", "width": 0.9018505811691284}, {"from": "h4XkP10BQNo", "to": "v1xePSUC3I4", "width": 0.9016175270080566}, {"from": "bepFvVY9MuM", "to": "eSUbAroTW6s", "width": 0.9045010805130005}, {"from": "rgResrM_LoA", "to": "WE-lvHDQX8o", "width": 0.9228365421295166}, {"from": "rgResrM_LoA", "to": "MkRuJVq-9C4", "width": 0.9051018953323364}, {"from": "rgResrM_LoA", "to": "eSUbAroTW6s", "width": 0.9272234439849854}, {"from": "WE-lvHDQX8o", "to": "MkRuJVq-9C4", "width": 0.9341816902160645}, {"from": "WE-lvHDQX8o", "to": "dpuLT-ldISs", "width": 0.9099709987640381}, {"from": "WE-lvHDQX8o", "to": "q5_9sLvLsEM", "width": 0.9096087217330933}, {"from": "WE-lvHDQX8o", "to": "eSUbAroTW6s", "width": 0.9065351486206055}, {"from": "e-8zbeH_kCg", "to": "MkRuJVq-9C4", "width": 0.9218244552612305}, {"from": "fQjBxSQNA9k", "to": "eSUbAroTW6s", "width": 0.9161300659179688}, {"from": "MkRuJVq-9C4", "to": "dpuLT-ldISs", "width": 0.9006412625312805}, {"from": "MkRuJVq-9C4", "to": "eSUbAroTW6s", "width": 0.9125070571899414}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
